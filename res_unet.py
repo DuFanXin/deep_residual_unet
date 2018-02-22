@@ -25,7 +25,11 @@ def encoder(x):
     main_path = Activation(activation='relu')(main_path)
 
     main_path = Conv2D(filters=64, kernel_size=(3, 3), padding='same', strides=(1, 1))(main_path)
-    main_path = add([x, main_path])
+
+    shortcut = Conv2D(filters=64, kernel_size=(1, 1), strides=(1, 1))(x)
+    shortcut = BatchNormalization()(shortcut)
+
+    main_path = add([shortcut, main_path])
     # first branching to decoder
     to_decoder.append(main_path)
 
